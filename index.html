@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Analyse des Stations</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Georgia, serif; background: #f5f5f5; }
+
+    /* Barre de navigation */
+    nav {
+    background: #00a3a6;
+    padding: 10px 110px 10px 20px; 
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    position: relative; 
+    }
+
+    .logo-nav {
+    position: absolute;
+    right: 15px;         
+    top: 10px;           
+    height: 40px;        
+    width: auto;
+    }
+
+    nav button {
+      background: transparent;
+      color: #ecf0f1;
+      border: 1px solid #ecf0f1;
+      padding: 8px 16px;
+      cursor: pointer;
+      border-radius: 4px;
+      font-size: 14px;
+      transition: all 0.2s;
+    }
+    nav button:hover, nav button.actif {
+      background: #ecf0f1;
+      color: #00a3a6;
+    }
+
+    /* Titre de la section active */
+    #titre-section {
+      background: white;
+      padding: 12px 20px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #00a3a6;
+      border-bottom: 2px solid #00a3a6;
+    }
+
+    /* L'iframe qui affiche le rapport */
+    iframe {
+      width: 100%;
+      height: calc(100vh - 100px);
+      border: none;
+      display: block;
+    }
+
+    /* Section À propos (cachée par défaut) */
+    #a-propos {
+      display: none; 
+      padding: 40px;
+      background: white;
+      height: calc(100vh - 100px);
+      overflow-y: auto;
+      line-height: 1.6;
+    }
+
+    #a-propos h1, #a-propos h2 {
+      color: #00a3a6;
+      margin-bottom: 15px;
+      margin-top: 25px;
+    }
+
+    #a-propos p, #a-propos ul {
+      margin-bottom: 15px;
+    }
+    
+    #a-propos ul {
+      margin-left: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <button class="actif" onclick="charger('Rendu_visuel_StationF1.html', 'Station F1', this)">
+      Station F1
+    </button>
+    <button onclick="charger('Rendu_visuel_StationF2.html', 'Station F2', this)">
+      Station F2
+    </button>
+    <button onclick="charger('Rendu_visuel_StationF3.html', 'Station F3', this)">
+      Station F3
+    </button>
+    <button onclick="charger('Rendu_visuel_StationF4.html', 'Station F4', this)">
+      Station F4
+    </button>
+    <button onclick="charger('Rendu_visuel_StationF5.html', 'Station F5', this)">
+      Station F5
+    </button>
+    <button onclick="charger('Rendu_visuel_StationF6.html', 'Station F6', this)">
+      Station F6
+    </button>
+    <button onclick="charger('Rendu_visuel_StationF7.html', 'Station F7', this)">
+      Station F7
+    </button>
+    <button onclick="charger('Rendu_visuel_StationS1.html', 'Station S1', this)">
+      Station S1
+    </button>
+    <button onclick="charger('Rendu_visuel_StationS2.html', 'Station S2', this)">
+      Station S2
+    </button>
+    <button onclick="charger('Rendu_visuel_StationS3.html', 'Station S3', this)">
+      Station S3
+    </button>
+    <button onclick="charger('Rendu_visuel_StationS4.html', 'Station S4', this)">
+      Station S4
+    </button>
+    <button onclick="charger('Rendu_visuel_StationS5.html', 'Station S5', this)">
+      Station S5
+    </button>
+    <button onclick="charger('Rendu_visuel_StationS6.html', 'Station S6', this)">
+      Station S6
+    </button>
+    <button onclick="charger('Rendu_visuel_StationS7.html', 'Station S7', this)">
+      Station S7
+    </button>
+    <button onclick="charger('Rendu_visuel_StationS8.html', 'Station S8', this)">
+      Station S8
+    </button>
+    <button onclick="charger('Rendu_visuel_StationS9.html', 'Station S9', this)">
+      Station S9
+    </button>
+    <button onclick="charger('Notice_fr.pdf', 'Note (FR)', this)">
+    Note (FR)
+    </button>
+    <button onclick="charger('Notice_en.pdf', 'Note (EN)', this)">
+    Note (EN)
+    </button>
+
+    <!-- Bouton pour la section À propos -->
+    <button onclick="afficherAPropos(this)">
+      À propos/About
+    </button>
+
+
+    <img src="Logo-blanc.png" alt="Logo INRAE" class="logo-nav">
+    </nav>
+
+
+  <div id="conteneur-iframe">
+    <div id="titre-section">Station F1</div>
+    <iframe id="contenu" src="Rendu_visuel_StationF1.html"></iframe>
+  </div>
+
+
+  <div id="a-propos">
+    <div id="section-fr">
+    <h1>À propos de ce projet</h1>
+    <p>Cette application web présente les résultats de l'analyse des différentes stations étudiées dans le cadre d'un stage sur l'implémentation de la méthodologie ShiftHappens pour l'estimation de détarages après évènements extrêmes dans l'arc alpin.</p>
+    
+    <h2>Mentions légales et crédits</h2>
+    
+    <h3>Auteurs</h3>
+    <p>Ce projet a été réalisé par :</p>
+    <ul>
+      <li><strong>Mahila CHARLES</strong> - Stagiaire en charge de la production des résultats, ENGEES, Strasbourg, France ; INRAE, UR RiverLy, Villeurbanne, France</li>
+      <li><strong>Martin MORLOT</strong> - Encadrant, INRAE, UR RiverLy, Villeurbanne, France</li>
+      <li><strong>Jérôme LE COZ</strong> - Encadrant, INRAE, UR RiverLy, Villeurbanne, France</li>
+      <li><strong>Benjamin RENARD</strong> - Encadrant, INRAE, UMR RECOVER, Aix-en-Provence, France</li>
+    </ul>
+    
+    <h3>Données</h3>
+    <p>Les résultats présentés dans ces rapports sont le résultats de calcules réalisés à partir des outils BaRatin, ShiftHappens et RBaM, à partir des données fournies par les unités hydrométriques françaises et slovènes.</p>
+    
+    <h3>Clause de non-responsabilité et avertissement</h3>
+    <p>
+    Les données, analyses et résultats présentés dans ces rapports ont été produits dans le cadre d'un stage. Ils sont fournis à titre exclusivement indicatif, pédagogique et exploratoire.</p>
+    <p>
+    En conséquence, ces informations n'ont <strong>aucune valeur légale</strong>, ne constituent pas un document officiel et ne doivent en aucun cas être prises pour référence ou servir de base à une prise de décision. <strong>Les auteurs déclinent toute responsabilité</strong> quant à l'exactitude, l'exhaustivité ou l'utilisation qui pourrait être faite des données et synthèses présentées dans cet outil.</p>    
+
+    <h3>Propriété intellectuelle</h3>
+    <p>Le contenu de ce site (textes, graphiques) est la propriété d'INRAE. Toute reproduction, même partielle, est soumise à autorisation.</p>
+    
+    <h3>Contact</h3>
+    <p>Pour toute question concernant ce projet ou ces données, vous pouvez contacter : <a href="mailto:baratin.dev@inrae.fr">baratin.dev@inrae.fr</a></p>
+  </div>
+
+    <hr style="border: 0; height: 1px; background: #ccc; margin: 40px 0;">
+
+  <!-- ENGLISH VERSION -->
+  <div id="section-en">
+  <h1>About this project</h1>
+  <p>This web application presents the analysis results for the various monitoring stations studied during an internship focused on implementing the ShiftHappens methodology to estimate rating curve shifts following extreme events in the Alpine arc.</p>
+  
+  <h2>Legal Notice and Credits</h2>
+  
+  <h3>Authors</h3>
+  <p>This project was carried out by:</p>
+  <ul>
+    <li><strong>Mahila CHARLES</strong> - Intern in charge of producing the results, ENGEES, Strasbourg, France; INRAE, UR RiverLy, Villeurbanne, France</li>
+    <li><strong>Martin MORLOT</strong> - Supervisor, INRAE, UR RiverLy, Villeurbanne, France</li>
+    <li><strong>Jérôme LE COZ</strong> - Supervisor, INRAE, UR RiverLy, Villeurbanne, France</li>
+    <li><strong>Benjamin RENARD</strong> - Supervisor, INRAE, UMR RECOVER, Aix-en-Provence, France</li>
+  </ul>
+  
+  <h3>Data</h3>
+  <p>The results presented in these reports were computed using the BaRatin, ShiftHappens, and RBaM software tools, based on data provided by French and Slovenian hydrometric services.</p>
+  
+  <h3>Disclaimer and Warning</h3>
+  <p>
+  The data, analyses, and results presented in these reports were produced as part of an academic internship. They are provided purely for informational, educational, and exploratory purposes.</p>
+  <p>
+  Consequently, this information has <strong>no legal standing</strong>, does not constitute an official document, and must not under any circumstances be used as a reference or as a basis for decision-making. <strong>Authors disclaims all liability</strong> regarding the accuracy, completeness, or any use made of the data and summaries presented in this tool.</p>   
+
+  <h3>Intellectual Property</h3>
+  <p>The content of this site (texts, graphics) is the property of INRAE. Any reproduction, even partial, is subject to prior authorization.</p>
+  
+  <h3>Contact</h3>
+  <p>For any questions regarding this project or this data, please contact: <a href="mailto:baratin.dev@inrae.fr">baratin.dev@inrae.fr</a></p>
+</div>
+</div>
+
+
+  <script>
+    function charger(fichier, titre, bouton) {
+      // 1. On s'assure que l'iframe est visible et que le "À propos" est caché
+      document.getElementById('conteneur-iframe').style.display = 'block';
+      document.getElementById('a-propos').style.display = 'none';
+
+      // 2. On charge le fichier dans l'iframe
+      document.getElementById('contenu').src = fichier;
+      
+      // 3. On met à jour le titre
+      document.getElementById('titre-section').textContent = titre;
+      
+      // 4. On gère la surbrillance des boutons
+      document.querySelectorAll('nav button').forEach(b => b.classList.remove('actif'));
+      bouton.classList.add('actif');
+    }
+
+    function afficherAPropos(bouton) {
+      // 1. On cache l'iframe et on affiche la section "À propos"
+      document.getElementById('conteneur-iframe').style.display = 'none';
+      document.getElementById('a-propos').style.display = 'block';
+
+      // 2. On gère la surbrillance des boutons
+      document.querySelectorAll('nav button').forEach(b => b.classList.remove('actif'));
+      bouton.classList.add('actif');
+    }
+  </script>
+
+</body>
+</html>
