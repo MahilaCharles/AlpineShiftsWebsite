@@ -2,28 +2,28 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Analyse des Stations</title>
+  <title>AlpineShifts</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: Georgia, serif; background: #f5f5f5; }
 
     /* Barre de navigation */
     nav {
-    background: #00a3a6;
-    padding: 10px 110px 10px 20px; 
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
-    position: relative; 
+      background: #00a3a6;
+      padding: 10px 110px 10px 20px; 
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      position: relative; 
     }
 
     .logo-nav {
-    position: absolute;
-    right: 15px;         
-    top: 10px;           
-    height: 40px;        
-    width: auto;
+      position: absolute;
+      right: 15px;         
+      top: 10px;          
+      height: 40px;        
+      width: auto;
     }
 
     nav button {
@@ -41,7 +41,7 @@
       color: #00a3a6;
     }
 
-    /* Titre de la section active */
+    /* Titre de la section active dans l'iframe */
     #titre-section {
       background: white;
       padding: 12px 20px;
@@ -49,6 +49,11 @@
       font-weight: bold;
       color: #00a3a6;
       border-bottom: 2px solid #00a3a6;
+    }
+
+    /* Conteneur principal de l'iframe (caché par défaut) */
+    #conteneur-iframe {
+      display: none;
     }
 
     /* L'iframe qui affiche le rapport */
@@ -59,9 +64,8 @@
       display: block;
     }
 
-    /* Section À propos (cachée par défaut) */
-    #a-propos {
-      display: none; 
+    /* Styles communs pour les sections Accueil et À propos */
+    #accueil, #a-propos {
       padding: 40px;
       background: white;
       height: calc(100vh - 100px);
@@ -69,25 +73,69 @@
       line-height: 1.6;
     }
 
-    #a-propos h1, #a-propos h2 {
+    /* Section À propos cachée par défaut */
+    #a-propos {
+      display: none; 
+    }
+
+    /* Section Accueil visible par défaut */
+    #accueil {
+      display: block;
+    }
+
+    #accueil h1, #accueil h2, #a-propos h1, #a-propos h2 {
       color: #00a3a6;
       margin-bottom: 15px;
       margin-top: 25px;
     }
 
-    #a-propos p, #a-propos ul {
+    #accueil p, #accueil ul, #a-propos p, #a-propos ul {
       margin-bottom: 15px;
     }
     
-    #a-propos ul {
+    #accueil ul, #a-propos ul {
       margin-left: 20px;
+    }
+
+    /* Boutons de raccourcis dans la page d'accueil */
+    .raccourcis-notices {
+      display: flex;
+      gap: 15px;
+      margin: 20px 0;
+      flex-wrap: wrap;
+    }
+
+    .btn-notice-accueil {
+      background: #00a3a6;
+      color: white;
+      padding: 10px 18px;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background 0.2s;
+    }
+
+    .btn-notice-accueil:hover {
+      background: #007a7c;
+    }
+
+    hr.separateur {
+      border: 0; 
+      height: 1px; 
+      background: #ccc; 
+      margin: 40px 0;
     }
   </style>
 </head>
 <body>
 
   <nav>
-    <button class="actif" onclick="charger('Rendu_visuel_StationF1.html', 'Station F1', this)">
+    <button id="btn-nav-accueil" class="actif" onclick="afficherAccueil(this)">
+      Accueil / Home
+    </button>
+    <button onclick="charger('Rendu_visuel_StationF1.html', 'Station F1', this)">
       Station F1
     </button>
     <button onclick="charger('Rendu_visuel_StationF2.html', 'Station F2', this)">
@@ -135,21 +183,66 @@
     <button onclick="charger('Rendu_visuel_StationS9.html', 'Station S9', this)">
       Station S9
     </button>
-    <button onclick="charger('Notice_fr.pdf', 'Note (FR)', this)">
-    Note (FR)
+    <button id="btn-nav-notice-fr" onclick="charger('Notice_fr.pdf', 'Note (FR)', this)">
+      Note (FR)
     </button>
-    <button onclick="charger('Notice_en.pdf', 'Note (EN)', this)">
-    Note (EN)
+    <button id="btn-nav-notice-en" onclick="charger('Notice_en.pdf', 'Note (EN)', this)">
+      Note (EN)
     </button>
 
-    <!-- Bouton pour la section À propos -->
     <button onclick="afficherAPropos(this)">
-      À propos/About
+      À propos / About
     </button>
-
 
     <img src="Logo-blanc.png" alt="Logo INRAE" class="logo-nav">
-    </nav>
+  </nav>
+
+
+  <div id="accueil">
+    
+    <div id="accueil-fr">
+      <h1>Bienvenue sur l'interface d'analyse hydrométrique</h1>
+      <p>Cet outil interactif rassemble les résultats d'analyses pour l'estimation de détarages suite à des évènements extrêmes dans l'arc alpin, grâce à l'outil <strong>ShiftHappens</strong>.</p>
+      
+      <h2>Documentation & Méthodologie</h2>
+      <p>Avant d'explorer les stations, vous pouvez consulter la note explicative des fichiers :</p>
+      <div class="raccourcis-notices">
+        <button class="btn-notice-accueil" onclick="chargerDepuisAccueil('Notice_fr.pdf', 'Note (FR)', 'btn-nav-notice-fr')">
+          📄 Consulter la note explicative (FR)
+        </button>
+      </div>
+
+      <h2>Comment naviguer sur le site ?</h2>
+      <ul>
+        <li><strong>Stations Françaises (F1 à F7) & Slovènes (S1 à S9) :</strong> Sélectionnez une station dans le menu supérieur pour afficher son rendu visuel complet.</li>
+        <li><strong>Notice méthodologique :</strong> Accessible à tout moment depuis le menu (<em>Note FR / EN</em>) ou via le bouton ci-dessus.</li>
+        <li><strong>À propos / About :</strong> Consultez les crédits, auteurs, partenaires ainsi que la clause de non-responsabilité.</li>
+      </ul>
+    </div>
+
+    <hr class="separateur">
+
+    <div id="accueil-en">
+      <h1>Welcome to the Hydrometric Analysis Interface</h1>
+      <p>This interactive platform presents analysis results for estimating rating curve shifts following extreme events in the Alpine arc, using the <strong>ShiftHappens</strong> methodology.</p>
+      
+      <h2>Documentation & Methodology</h2>
+      <p>Before exploring the stations, you can consult the explanatory note:</p>
+      <div class="raccourcis-notices">
+        <button class="btn-notice-accueil" onclick="chargerDepuisAccueil('Notice_en.pdf', 'Note (EN)', 'btn-nav-notice-en')">
+          📄 Read the explanatory note (EN)
+        </button>
+      </div>
+
+      <h2>How to navigate this site?</h2>
+      <ul>
+        <li><strong>French Stations (F1 to F7) & Slovenian Stations (S1 to S9):</strong> Click on any station in the top menu to display its detailed visual report.</li>
+        <li><strong>Methodological Notes:</strong> Accessible at any time from the top menu (<em>Note FR / EN</em>) or via the button above.</li>
+        <li><strong>À propos / About:</strong> View project credits, authors, institutional partners, and legal disclaimers.</li>
+      </ul>
+    </div>
+
+  </div>
 
 
   <div id="conteneur-iframe">
@@ -160,95 +253,103 @@
 
   <div id="a-propos">
     <div id="section-fr">
-    <h1>À propos de ce projet</h1>
-    <p>Cette application web présente les résultats de l'analyse des différentes stations étudiées dans le cadre d'un stage sur l'implémentation de la méthodologie ShiftHappens pour l'estimation de détarages après évènements extrêmes dans l'arc alpin.</p>
-    
-    <h2>Mentions légales et crédits</h2>
-    
-    <h3>Auteurs</h3>
-    <p>Ce projet a été réalisé par :</p>
-    <ul>
-      <li><strong>Mahila CHARLES</strong> - Stagiaire en charge de la production des résultats, ENGEES, Strasbourg, France ; INRAE, UR RiverLy, Villeurbanne, France</li>
-      <li><strong>Martin MORLOT</strong> - Encadrant, INRAE, UR RiverLy, Villeurbanne, France</li>
-      <li><strong>Jérôme LE COZ</strong> - Encadrant, INRAE, UR RiverLy, Villeurbanne, France</li>
-      <li><strong>Benjamin RENARD</strong> - Encadrant, INRAE, UMR RECOVER, Aix-en-Provence, France</li>
-    </ul>
-    
-    <h3>Données</h3>
-    <p>Les résultats présentés dans ces rapports sont le résultats de calcules réalisés à partir des outils BaRatin, ShiftHappens et RBaM, à partir des données fournies par les unités hydrométriques françaises et slovènes.</p>
-    
-    <h3>Clause de non-responsabilité et avertissement</h3>
-    <p>
-    Les données, analyses et résultats présentés dans ces rapports ont été produits dans le cadre d'un stage. Ils sont fournis à titre exclusivement indicatif, pédagogique et exploratoire.</p>
-    <p>
-    En conséquence, ces informations n'ont <strong>aucune valeur légale</strong>, ne constituent pas un document officiel et ne doivent en aucun cas être prises pour référence ou servir de base à une prise de décision. <strong>Les auteurs déclinent toute responsabilité</strong> quant à l'exactitude, l'exhaustivité ou l'utilisation qui pourrait être faite des données et synthèses présentées dans cet outil.</p>    
+      <h1>À propos de ce projet</h1>
+      <p>Cette application web présente les résultats de l'analyse des différentes stations étudiées dans le cadre d'un stage sur l'implémentation de la méthodologie ShiftHappens pour l'estimation de détarages après évènements extrêmes dans l'arc alpin.</p>
+      
+      <h2>Mentions légales et crédits</h2>
+      
+      <h3>Auteurs</h3>
+      <p>Ce projet a été réalisé par :</p>
+      <ul>
+        <li><strong>Mahila CHARLES</strong> - Stagiaire en charge de la production des résultats, ENGEES, Strasbourg, France ; INRAE, UR RiverLy, Villeurbanne, France</li>
+        <li><strong>Martin MORLOT</strong> - Encadrant, INRAE, UR RiverLy, Villeurbanne, France</li>
+        <li><strong>Jérôme LE COZ</strong> - Encadrant, INRAE, UR RiverLy, Villeurbanne, France</li>
+        <li><strong>Benjamin RENARD</strong> - Encadrant, INRAE, UMR RECOVER, Aix-en-Provence, France</li>
+      </ul>
+      
+      <h3>Données</h3>
+      <p>Les résultats présentés dans ces rapports sont le résultat de calculs réalisés à partir des outils BaRatin, ShiftHappens et RBaM, à partir des données fournies par les unités hydrométriques françaises et slovènes.</p>
+      
+      <h3>Clause de non-responsabilité et avertissement</h3>
+      <p>
+      Les données, analyses et résultats présentés dans ces rapports ont été produits dans le cadre d'un stage. Ils sont fournis à titre exclusivement indicatif, pédagogique et exploratoire.</p>
+      <p>
+      En conséquence, ces informations n'ont <strong>aucune valeur légale</strong>, ne constituent pas un document officiel et ne doivent en aucun cas être prises pour référence ou servir de base à une prise de décision. <strong>Les auteurs déclinent toute responsabilité</strong> quant à l'exactitude, l'exhaustivité ou l'utilisation qui pourrait être faite des données et synthèses présentées dans cet outil.</p>    
 
-    <h3>Propriété intellectuelle</h3>
-    <p>Le contenu de ce site (textes, graphiques) est la propriété d'INRAE. Toute reproduction, même partielle, est soumise à autorisation.</p>
-    
-    <h3>Contact</h3>
-    <p>Pour toute question concernant ce projet ou ces données, vous pouvez contacter : <a href="mailto:baratin.dev@inrae.fr">baratin.dev@inrae.fr</a></p>
+      <h3>Propriété intellectuelle</h3>
+      <p>Le contenu de ce site (textes, graphiques) est la propriété d'INRAE. Toute reproduction, même partielle, est soumise à autorisation.</p>
+      
+      <h3>Contact</h3>
+      <p>Pour toute question concernant ce projet ou ces données, vous pouvez contacter : <a href="mailto:baratin.dev@inrae.fr">baratin.dev@inrae.fr</a></p>
+    </div>
+
+    <hr class="separateur">
+
+    <div id="section-en">
+      <h1>About this project</h1>
+      <p>This web application presents the analysis results for the various monitoring stations studied during an internship focused on implementing the ShiftHappens methodology to estimate rating curve shifts following extreme events in the Alpine arc.</p>
+      
+      <h2>Legal Notice and Credits</h2>
+      
+      <h3>Authors</h3>
+      <p>This project was carried out by:</p>
+      <ul>
+        <li><strong>Mahila CHARLES</strong> - Intern in charge of producing the results, ENGEES, Strasbourg, France; INRAE, UR RiverLy, Villeurbanne, France</li>
+        <li><strong>Martin MORLOT</strong> - Supervisor, INRAE, UR RiverLy, Villeurbanne, France</li>
+        <li><strong>Jérôme LE COZ</strong> - Supervisor, INRAE, UR RiverLy, Villeurbanne, France</li>
+        <li><strong>Benjamin RENARD</strong> - Supervisor, INRAE, UMR RECOVER, Aix-en-Provence, France</li>
+      </ul>
+      
+      <h3>Data</h3>
+      <p>The results presented in these reports were computed using the BaRatin, ShiftHappens, and RBaM software tools, based on data provided by French and Slovenian hydrometric services.</p>
+      
+      <h3>Disclaimer and Warning</h3>
+      <p>
+      The data, analyses, and results presented in these reports were produced as part of an academic internship. They are provided purely for informational, educational, and exploratory purposes.</p>
+      <p>
+      Consequently, this information has <strong>no legal standing</strong>, does not constitute an official document, and must not under any circumstances be used as a reference or as a basis for decision-making. <strong>Authors disclaims all liability</strong> regarding the accuracy, completeness, or any use made of the data and summaries presented in this tool.</p>   
+
+      <h3>Intellectual Property</h3>
+      <p>The content of this site (texts, graphics) is the property of INRAE. Any reproduction, even partial, is subject to prior authorization.</p>
+      
+      <h3>Contact</h3>
+      <p>For any questions regarding this project or this data, please contact: <a href="mailto:baratin.dev@inrae.fr">baratin.dev@inrae.fr</a></p>
+    </div>
   </div>
-
-    <hr style="border: 0; height: 1px; background: #ccc; margin: 40px 0;">
-
-  <!-- ENGLISH VERSION -->
-  <div id="section-en">
-  <h1>About this project</h1>
-  <p>This web application presents the analysis results for the various monitoring stations studied during an internship focused on implementing the ShiftHappens methodology to estimate rating curve shifts following extreme events in the Alpine arc.</p>
-  
-  <h2>Legal Notice and Credits</h2>
-  
-  <h3>Authors</h3>
-  <p>This project was carried out by:</p>
-  <ul>
-    <li><strong>Mahila CHARLES</strong> - Intern in charge of producing the results, ENGEES, Strasbourg, France; INRAE, UR RiverLy, Villeurbanne, France</li>
-    <li><strong>Martin MORLOT</strong> - Supervisor, INRAE, UR RiverLy, Villeurbanne, France</li>
-    <li><strong>Jérôme LE COZ</strong> - Supervisor, INRAE, UR RiverLy, Villeurbanne, France</li>
-    <li><strong>Benjamin RENARD</strong> - Supervisor, INRAE, UMR RECOVER, Aix-en-Provence, France</li>
-  </ul>
-  
-  <h3>Data</h3>
-  <p>The results presented in these reports were computed using the BaRatin, ShiftHappens, and RBaM software tools, based on data provided by French and Slovenian hydrometric services.</p>
-  
-  <h3>Disclaimer and Warning</h3>
-  <p>
-  The data, analyses, and results presented in these reports were produced as part of an academic internship. They are provided purely for informational, educational, and exploratory purposes.</p>
-  <p>
-  Consequently, this information has <strong>no legal standing</strong>, does not constitute an official document, and must not under any circumstances be used as a reference or as a basis for decision-making. <strong>Authors disclaims all liability</strong> regarding the accuracy, completeness, or any use made of the data and summaries presented in this tool.</p>   
-
-  <h3>Intellectual Property</h3>
-  <p>The content of this site (texts, graphics) is the property of INRAE. Any reproduction, even partial, is subject to prior authorization.</p>
-  
-  <h3>Contact</h3>
-  <p>For any questions regarding this project or this data, please contact: <a href="mailto:baratin.dev@inrae.fr">baratin.dev@inrae.fr</a></p>
-</div>
-</div>
 
 
   <script>
-    function charger(fichier, titre, bouton) {
-      // 1. On s'assure que l'iframe est visible et que le "À propos" est caché
-      document.getElementById('conteneur-iframe').style.display = 'block';
+    function afficherAccueil(bouton) {
+      document.getElementById('conteneur-iframe').style.display = 'none';
       document.getElementById('a-propos').style.display = 'none';
+      document.getElementById('accueil').style.display = 'block';
 
-      // 2. On charge le fichier dans l'iframe
-      document.getElementById('contenu').src = fichier;
-      
-      // 3. On met à jour le titre
-      document.getElementById('titre-section').textContent = titre;
-      
-      // 4. On gère la surbrillance des boutons
       document.querySelectorAll('nav button').forEach(b => b.classList.remove('actif'));
       bouton.classList.add('actif');
     }
 
+    function charger(fichier, titre, bouton) {
+      document.getElementById('conteneur-iframe').style.display = 'block';
+      document.getElementById('a-propos').style.display = 'none';
+      document.getElementById('accueil').style.display = 'none';
+
+      document.getElementById('contenu').src = fichier;
+      document.getElementById('titre-section').textContent = titre;
+      
+      document.querySelectorAll('nav button').forEach(b => b.classList.remove('actif'));
+      bouton.classList.add('actif');
+    }
+
+    function chargerDepuisAccueil(fichier, titre, idBoutonNav) {
+      const boutonNav = document.getElementById(idBoutonNav);
+      charger(fichier, titre, boutonNav);
+    }
+
     function afficherAPropos(bouton) {
-      // 1. On cache l'iframe et on affiche la section "À propos"
       document.getElementById('conteneur-iframe').style.display = 'none';
+      document.getElementById('accueil').style.display = 'none';
       document.getElementById('a-propos').style.display = 'block';
 
-      // 2. On gère la surbrillance des boutons
       document.querySelectorAll('nav button').forEach(b => b.classList.remove('actif'));
       bouton.classList.add('actif');
     }
